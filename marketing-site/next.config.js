@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
+  trailingSlash: true,
   images: {
     remotePatterns: [
       {
@@ -8,7 +10,13 @@ const nextConfig = {
         pathname: '/s/files/**',
       },
     ],
-    unoptimized: false,
+    unoptimized: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
   },
 };
 

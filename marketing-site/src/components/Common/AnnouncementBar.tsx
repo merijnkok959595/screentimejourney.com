@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import GlobalCurrencySelector from "./GlobalCurrencySelector";
 
 interface Announcement {
   text: string;
@@ -214,95 +215,9 @@ const AnnouncementBar: React.FC<AnnouncementBarProps> = ({
             )}
           </div>
 
-          {/* Right: Country/Currency Selector - Hidden on mobile */}
+          {/* Right: Global Country/Currency Selector - Hidden on mobile */}
           <div className="announcement-right hidden lg:flex items-center justify-end">
-            <div className="disclosure relative" ref={countrySelectorRef}>
-              <button
-                type="button"
-                className="disclosure__button localization-form__select localization-selector link link--text caption-large flex items-center gap-1 hover:opacity-80 transition-opacity"
-                style={{ fontSize: '16.25px' }}
-                aria-expanded={countrySelectorOpen}
-                aria-controls="country-results"
-                onClick={() => setCountrySelectorOpen(!countrySelectorOpen)}
-              >
-                <span>
-                  {selectedCountry} | {selectedCurrency}{" "}
-                  {countries.find((c) => c.name === selectedCountry)?.symbol || "€"}
-                </span>
-                <svg
-                  className={`icon icon-caret w-3 h-3 transition-transform ${
-                    countrySelectorOpen ? "rotate-180" : ""
-                  }`}
-                  viewBox="0 0 10 6"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-
-              {countrySelectorOpen && (
-                <>
-                  <div className="disclosure__list-wrapper country-selector absolute top-full right-0 mt-0 bg-[#2E0456] rounded-md shadow-lg border border-white/20 z-50 min-w-[200px] max-h-[440px] overflow-hidden">
-                    <div className="disclosure__list country-selector__list max-h-[400px] overflow-y-auto py-1.5">
-                      <ul role="list" className="list-unstyled">
-                        {countries.map((country) => (
-                          <li
-                            key={country.code}
-                            className="disclosure__item"
-                            tabIndex={-1}
-                          >
-                            <a
-                              className={`link link--text disclosure__link caption-large focus-inset grid grid-cols-[auto_1fr_auto] gap-2 px-4 py-2.5 text-sm hover:bg-white/10 transition-colors ${
-                                selectedCountry === country.name
-                                  ? "bg-white/10 text-white"
-                                  : "text-white/75"
-                              }`}
-                              href="#"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handleCountrySelect(country);
-                              }}
-                            >
-                              <span
-                                className={`icon-checkmark w-4 h-4 ${
-                                  selectedCountry === country.name
-                                    ? "block"
-                                    : "hidden"
-                                }`}
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="currentColor"
-                                  viewBox="0 0 12 9"
-                                  className="w-full h-full text-white"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M11.35.643a.5.5 0 0 1 .006.707l-6.77 6.886a.5.5 0 0 1-.719-.006L.638 4.845a.5.5 0 1 1 .724-.69l2.872 3.011 6.41-6.517a.5.5 0 0 1 .707-.006z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                              </span>
-                              <span className="country text-white text-sm">
-                                {country.name}
-                              </span>
-                              <span className="localization-form__currency text-white/60 text-xs whitespace-nowrap">
-                                {country.currency} {country.symbol}
-                              </span>
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="country-selector__overlay fixed inset-0 bg-black/20 z-40" onClick={() => setCountrySelectorOpen(false)} />
-                </>
-              )}
-            </div>
+            <GlobalCurrencySelector />
           </div>
         </div>
 

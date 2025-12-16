@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import FooterCurrencySelector from './FooterCurrencySelector';
 
 const Footer: React.FC = () => {
   return (
@@ -49,6 +50,11 @@ const Footer: React.FC = () => {
 
       {/* Footer Bottom - Policies */}
       <div className="container footer-bottom">
+        {/* Currency Selector */}
+        <div className="footer-currency-section" style={{ display: 'flex', justifyContent: 'center', paddingBottom: '1rem', borderBottom: '1px solid #e5e5e5', marginBottom: '1rem' }}>
+          <FooterCurrencySelector />
+        </div>
+        
         <div className="footer-policies">
           <span>2025, SCREENTIMEJOURNEY ©</span>
           <div className="footer-policy-links">

@@ -25,7 +25,7 @@ const ScrollingBanner: React.FC<ScrollingBannerProps> = ({
     { text: "Digital wellness starts with awareness" },
     { text: "Take control of your screen time" },
   ],
-  animationDuration = 20,
+  animationDuration = 90, // Changed from 20 to match desktop speed
   pauseOnHover = true,
   direction = "left",
   backgroundColor = "#1a1a1a",
@@ -45,9 +45,13 @@ const ScrollingBanner: React.FC<ScrollingBannerProps> = ({
     if (banner.id && banner.id.startsWith('scrolling-banner-')) {
       const existingStyle = document.querySelector(`style[data-banner-id="${banner.id}"]`);
       if (existingStyle) {
-        document.head.removeChild(existingStyle);
+        existingStyle.remove();
       }
     }
+    
+    // Responsive animation duration
+    const isMobile = window.innerWidth <= 768;
+    const responsiveAnimationDuration = isMobile ? 80 : animationDuration; // Mobile: 80s, Desktop: 90s
     
     // Always duplicate items for seamless infinite scroll
     const originalItems = Array.from(list.children);
@@ -88,7 +92,7 @@ const ScrollingBanner: React.FC<ScrollingBannerProps> = ({
     style.textContent = `
       #${sectionId} ul {
         animation-name: scrolling-banner-animation-${sectionId};
-        animation-duration: ${animationDuration}s;
+        animation-duration: ${responsiveAnimationDuration}s;
         animation-direction: ${animationDirection};
         animation-iteration-count: infinite;
         animation-timing-function: linear;
@@ -107,9 +111,14 @@ const ScrollingBanner: React.FC<ScrollingBannerProps> = ({
     
     document.head.appendChild(style);
     
+    // Cleanup function to prevent animation stacking
     return () => {
       if (document.head.contains(style)) {
         document.head.removeChild(style);
+      }
+      // Also remove any inline styles that might conflict
+      if (list && list.style.animation) {
+        list.style.animation = '';
       }
     };
   }, [items, animationDuration, direction, gap]);

@@ -1,6 +1,7 @@
 import React from 'react';
 import Separator from '@/components/Common/Separator';
 import Footer from '@/components/Common/Footer';
+import StripeCheckout from '@/components/Stripe/StripeCheckout';
 
 const StartNowPage = () => {
   return (
@@ -98,8 +99,9 @@ const StartNowPage = () => {
               ))}
             </div>
 
-            <a 
-              href="https://www.screentimejourney.com/products/screentimejourney"
+            <StripeCheckout 
+              plan="premium"
+              buttonText="Start Your Journey Now"
               style={{ 
                 display: 'inline-block',
                 padding: '20px 40px',
@@ -110,11 +112,11 @@ const StartNowPage = () => {
                 fontWeight: '700',
                 fontSize: '1.25rem',
                 marginBottom: '16px',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                border: 'none',
+                cursor: 'pointer'
               }}
-            >
-              Start Your Journey Now
-            </a>
+            />
             
             <p style={{ 
               fontSize: '0.875rem', 

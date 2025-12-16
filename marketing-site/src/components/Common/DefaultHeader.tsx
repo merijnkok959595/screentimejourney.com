@@ -1,10 +1,28 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { isAuthenticated, logout, AUTH_CONFIG } from '@/lib/auth';
 
 const DefaultHeader: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userAuthenticated, setUserAuthenticated] = useState(false);
+
+  // Check authentication status on mount and when storage changes
+  useEffect(() => {
+    const checkAuthStatus = () => {
+      setUserAuthenticated(isAuthenticated());
+    };
+    
+    checkAuthStatus();
+    
+    // Listen for storage changes (when user logs in/out in another tab)
+    window.addEventListener('storage', checkAuthStatus);
+    
+    return () => {
+      window.removeEventListener('storage', checkAuthStatus);
+    };
+  }, []);
 
   // Shrink header on scroll (Screen Time Journey method)
   useEffect(() => {
@@ -108,13 +126,45 @@ const DefaultHeader: React.FC = () => {
               </Link>
             </div>
             <div className="mobile-menu-actions">
-              <Link
-                className="btn-outline-primary"
-                href="/"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Home
-              </Link>
+              {userAuthenticated ? (
+                <>
+                  <Link
+                    className="btn-primary"
+                    href={AUTH_CONFIG.DASHBOARD_URL}
+                    onClick={() => setMobileMenuOpen(false)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    className="btn-outline-secondary"
+                    onClick={() => {
+                      logout();
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    className="btn-primary"
+                    href="/product/screentimejourney"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Start Now
+                  </Link>
+                  <Link
+                    className="btn-outline-secondary"
+                    href="/signin"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -138,7 +188,29 @@ const DefaultHeader: React.FC = () => {
         {/* Action Buttons (Desktop Only) */}
         <div className="header-actions">
           <div className="header-buttons-desktop">
-            <Link className="btn-outline-primary" href="/">Home</Link>
+            {userAuthenticated ? (
+              <>
+                <Link 
+                  className="btn-primary" 
+                  href={AUTH_CONFIG.DASHBOARD_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Dashboard
+                </Link>
+                <button
+                  className="btn-outline-secondary"
+                  onClick={logout}
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link className="btn-primary" href="/product/screentimejourney">Start Now</Link>
+                <Link className="btn-outline-secondary" href="/signin">Login</Link>
+              </>
+            )}
           </div>
         </div>
       </div>

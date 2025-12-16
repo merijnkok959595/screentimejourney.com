@@ -14,16 +14,14 @@ import CartSidebarModal from "@/components/Common/CartSidebarModal";
 import { PreviewSliderProvider } from "../context/PreviewSliderContext";
 import PreviewSliderModal from "@/components/Common/PreviewSlider";
 
-import PreLoader from "@/components/Common/PreLoader";
 import AnnouncementBar from "@/components/Common/AnnouncementBar";
-import WatiWidget from "@/components/Common/WatiWidget";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false); // Removed loading spinner
   const pathname = usePathname();
   const isHomePage = pathname === '/';
 
@@ -119,19 +117,9 @@ export default function RootLayout({
                 }
                 
                 function resetScrollingBanner() {
-                  const scrollingBanner = document.querySelector('.dbtfy-scrolling-banner ul');
-                  
-                  if (scrollingBanner) {
-                    console.log('🎬 Resetting scrolling banner animation');
-                    // Force animation reset
-                    scrollingBanner.style.animation = 'none';
-                    
-                    // Trigger reflow to ensure the animation stops
-                    scrollingBanner.offsetHeight;
-                    
-                    // Restart animation from beginning
-                    scrollingBanner.style.animation = '';
-                  }
+                  // Animation stacking fix: Let React component handle all animations
+                  // This function is now disabled to prevent multiple animation timers
+                  console.log('🎬 Scrolling banner animation now handled by React component (prevents stacking)');
                 }
                 
                 // Immediate execution
@@ -212,9 +200,6 @@ export default function RootLayout({
           }}
         />
         
-        {loading ? (
-          <PreLoader />
-        ) : (
           <>
             <ReduxProvider>
               <CartModalProvider>
@@ -227,13 +212,11 @@ export default function RootLayout({
                     <QuickViewModal />
                     <CartSidebarModal />
                     <PreviewSliderModal />
-                  </PreviewSliderProvider>
-                </ModalProvider>
-              </CartModalProvider>
+                    </PreviewSliderProvider>
+                  </ModalProvider>
+                </CartModalProvider>
             </ReduxProvider>
-            <WatiWidget />
-          </>
-        )}
+            </>
       </body>
     </html>
   );

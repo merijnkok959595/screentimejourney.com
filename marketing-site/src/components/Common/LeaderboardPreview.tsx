@@ -32,7 +32,7 @@ const LeaderboardPreview: React.FC<LeaderboardPreviewProps> = ({
     male: [],
     female: []
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // Disabled loading spinner
   const [hasError, setHasError] = useState(false);
 
   const medals = {

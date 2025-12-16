@@ -31,7 +31,7 @@ const Home = () => {
           { text: "💪" },
           { text: "Take control of your screen time today" },
         ]}
-        animationDuration={150}
+        animationDuration={90}
         pauseOnHover={true}
         direction="left"
         backgroundColor="#f9f9f9"

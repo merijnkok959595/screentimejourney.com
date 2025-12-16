@@ -2,18 +2,36 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { isAuthenticated, logout, AUTH_CONFIG } from '@/lib/auth';
 
 const HomeHeader = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [headerHidden, setHeaderHidden] = useState(false);
   const [headerAnimate, setHeaderAnimate] = useState(false);
+  const [userAuthenticated, setUserAuthenticated] = useState(false);
   const pathname = usePathname();
   const isHomePage = pathname === '/';
   
   // Initialize transparent state - start as true if on home page
   const [isTransparent, setIsTransparent] = useState(isHomePage);
   
+  // Check authentication status on mount
+  useEffect(() => {
+    const checkAuthStatus = () => {
+      setUserAuthenticated(isAuthenticated());
+    };
+    
+    checkAuthStatus();
+    
+    // Listen for storage changes
+    window.addEventListener('storage', checkAuthStatus);
+    
+    return () => {
+      window.removeEventListener('storage', checkAuthStatus);
+    };
+  }, []);
+
   // Scroll detectie (Hero trigger) + Shopify header appear effect + Logo animation
   useEffect(() => {
     if (!isHomePage) {
@@ -192,13 +210,45 @@ const HomeHeader = () => {
               </Link>
             </div>
             <div className="mobile-menu-actions">
-              <Link
-                className="btn-primary"
-                href="/product/screentimejourney"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Home
-              </Link>
+              {userAuthenticated ? (
+                <>
+                  <Link
+                    className="btn-primary"
+                    href={AUTH_CONFIG.DASHBOARD_URL}
+                    onClick={() => setMobileMenuOpen(false)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    className="btn-outline-secondary"
+                    onClick={() => {
+                      logout();
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    className="btn-primary"
+                    href="/product/screentimejourney"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Start Now
+                  </Link>
+                  <Link
+                    className="btn-outline-secondary"
+                    href="/signin"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -253,20 +303,39 @@ const HomeHeader = () => {
           {/* Desktop actions */}
           <div className="header-actions">
             <div className="header-buttons-desktop">
-              <Link
-                className={`btn-outline-primary ${isTransparent && isHomePage ? 'btn-inverted-primary' : ''}`}
-                href="/product/screentimejourney"
-              >
-                Home
-              </Link>
-              <button 
-                className={`btn-outline-secondary ${isTransparent && isHomePage ? 'btn-inverted-secondary' : ''}`}
-                onClick={() => {
-                  window.location.href = 'https://xpvznx-9w.myshopify.com/account/logout?return_url=/';
-                }}
-              >
-                Log out
-              </button>
+              {userAuthenticated ? (
+                <>
+                  <Link
+                    className={`btn-primary ${isTransparent && isHomePage ? 'btn-inverted-primary' : ''}`}
+                    href={AUTH_CONFIG.DASHBOARD_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    className={`btn-outline-secondary ${isTransparent && isHomePage ? 'btn-inverted-secondary' : ''}`}
+                    onClick={logout}
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    className={`btn-primary ${isTransparent && isHomePage ? 'btn-inverted-primary' : ''}`}
+                    href="/product/screentimejourney"
+                  >
+                    Start Now
+                  </Link>
+                  <Link
+                    className={`btn-outline-secondary ${isTransparent && isHomePage ? 'btn-inverted-secondary' : ''}`}
+                    href="/signin"
+                  >
+                    Login
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>

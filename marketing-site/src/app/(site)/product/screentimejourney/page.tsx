@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import Footer from '@/components/Common/Footer';
 import MilestonesPreview from '@/components/Common/MilestonesPreview';
 import LeaderboardPreview from '@/components/Common/LeaderboardPreview';
+import StripeCheckout from '@/components/Stripe/StripeCheckout';
+import PriceDisplay from '@/components/Common/PriceDisplay';
 
 const ScreenTimeJourneyProductPage = () => {
   const [expandedQuickFaq, setExpandedQuickFaq] = useState<number | null>(null);
@@ -91,7 +93,7 @@ const ScreenTimeJourneyProductPage = () => {
                   marginBottom: '16px',
                   fontFamily: 'var(--font-body)'
                 }}>
-                  €19.99
+                  <PriceDisplay plan="premium" />
                 </div>
                 <p style={{
                   color: 'rgba(15, 23, 42, 0.75)',
@@ -101,7 +103,7 @@ const ScreenTimeJourneyProductPage = () => {
                   fontWeight: '400',
                   lineHeight: '1.5'
                 }}>
-                  Less than €0,25 per hour of your freedom back.
+                  Your freedom back for less than the price of a coffee.
                 </p>
               </div>
 
@@ -156,18 +158,19 @@ const ScreenTimeJourneyProductPage = () => {
               </div>
 
               {/* Start Now Button */}
-              <a 
-                ref={mainButtonRef}
-                href="https://www.screentimejourney.com/products/screentimejourney"
-                className="btn-primary product-pulse-button"
-                style={{
-                  width: '100%',
-                  marginBottom: '30px',
-                  display: 'inline-flex'
-                }}
-              >
-                <span>Start now</span>
-              </a>
+              <div ref={mainButtonRef} style={{ width: '100%', marginBottom: '30px' }}>
+                <StripeCheckout 
+                  plan="premium"
+                  buttonText="Start now"
+                  className="btn-primary product-pulse-button"
+                  style={{
+                    width: '100%',
+                    display: 'inline-flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                />
+              </div>
 
               {/* Payment Methods */}
               <div style={{ marginBottom: '40px' }}>
@@ -461,13 +464,14 @@ const ScreenTimeJourneyProductPage = () => {
               color: 'rgba(255, 255, 255, 0.8)',
               fontFamily: 'var(--font-body)'
             }}>
-              €19.99
+              <PriceDisplay plan="premium" />
             </div>
           </div>
 
           {/* Start Now Button */}
-          <a
-            href="https://www.screentimejourney.com/products/screentimejourney"
+          <StripeCheckout 
+            plan="premium"
+            buttonText="Start now"
             className="sticky-cart-button"
             style={{
               background: 'white',
@@ -486,9 +490,7 @@ const ScreenTimeJourneyProductPage = () => {
               alignItems: 'center',
               justifyContent: 'center'
             }}
-          >
-            <span>Start now</span>
-          </a>
+          />
         </div>
       )}
 

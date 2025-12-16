@@ -1,0 +1,39 @@
+{
+  "CallerReference": "screentimejourney-marketing-2025-12-16",
+  "Comment": "CloudFront distribution for Screen Time Journey marketing site",
+  "DefaultRootObject": "index.html",
+  "Origins": {
+    "Quantity": 1,
+    "Items": [
+      {
+        "Id": "S3-screentimejourney-marketing-site",
+        "DomainName": "screentimejourney-marketing-site.s3-website.eu-north-1.amazonaws.com",
+        "CustomOriginConfig": {
+          "HTTPPort": 80,
+          "HTTPSPort": 443,
+          "OriginProtocolPolicy": "http-only"
+        }
+      }
+    ]
+  },
+  "DefaultCacheBehavior": {
+    "TargetOriginId": "S3-screentimejourney-marketing-site",
+    "ViewerProtocolPolicy": "redirect-to-https",
+    "TrustedSigners": {
+      "Enabled": false,
+      "Quantity": 0
+    },
+    "ForwardedValues": {
+      "QueryString": false,
+      "Cookies": {
+        "Forward": "none"
+      }
+    },
+    "MinTTL": 0,
+    "Compress": true
+  },
+  "Enabled": true,
+  "PriceClass": "PriceClass_100"
+}
+
+

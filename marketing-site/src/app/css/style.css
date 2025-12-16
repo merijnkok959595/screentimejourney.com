@@ -1864,19 +1864,20 @@ header[class*="bg-transparent"] .header-nav a {
 
 .dbtfy-scrolling-banner ul {
   align-items: center;
-  animation: scroll 120s linear infinite; /* Add the actual animation */
-  animation-play-state: running;
+  /* Animation now handled by React component to prevent stacking */
   display: inline-flex;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* Force animation reset on page load - prevent state bugs */
+/* Scrolling banner keyframes removed - now handled by React component */
+/* This prevents animation stacking when navigating between pages */
+
+/* Animation now handled by React component - prevents stacking */
 @media (prefers-reduced-motion: no-preference) {
   .dbtfy-scrolling-banner ul {
-    animation: scroll 120s linear infinite !important;
-    animation-play-state: running !important;
+    /* Animation removed - handled by ScrollingBanner.tsx */
   }
 }
 
@@ -1939,9 +1940,9 @@ header[class*="bg-transparent"] .header-nav a {
     padding-bottom: 10px !important;
   }
   
-  /* Mobile scrolling banner - faster animation */
+  /* Mobile scrolling banner - animation speed now handled by React component */
   .dbtfy-scrolling-banner ul {
-    animation-duration: 80s !important;
+    /* Animation removed to prevent stacking - handled by ScrollingBanner.tsx */
   }
 }
 
@@ -3232,11 +3233,15 @@ header[class*="bg-transparent"] .header-nav a {
     max-width: 100% !important;
   }
 
-  /* Product page image sizing for very small screens */
+  /* Product page image sizing - match image-with-text sizing */
   .product-video-container {
-    width: min(450px, calc(100vw - 40px)) !important;
-    height: min(450px, calc(100vw - 40px)) !important;
-    max-width: min(450px, calc(100vw - 40px)) !important;
+    max-width: 85% !important;
+    width: 85% !important;
+    height: auto !important;
+    aspect-ratio: 1/1 !important;
+    margin: 0 auto !important;
+    padding: 0 1.5rem !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important; /* Minimal shadow */
   }
 
   .media-card {
@@ -3264,15 +3269,16 @@ header[class*="bg-transparent"] .header-nav a {
     padding: 0 !important;
   }
 
-  /* Product page video/image mobile styling */
+  /* Product page video/image mobile styling - match image-with-text */
   .product-video-container {
-    width: 450px !important;
-    height: 450px !important;
-    max-width: 450px !important;
-    margin: 0 auto !important;
+    max-width: 85% !important;
+    width: 85% !important;
+    height: auto !important;
     aspect-ratio: 1/1 !important;
+    margin: 0 auto !important;
+    padding: 0 1.5rem !important;
     border-radius: 8px !important;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12) !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important; /* Minimal shadow */
   }
 
   .product-grid {
@@ -3501,7 +3507,7 @@ header[class*="bg-transparent"] .header-nav a {
   }
 
   .default-header .header-inner {
-    border-bottom: 1px solid #eeeeee !important; /* Mobile border on inner container */
+    border-bottom: none !important; /* Remove duplicate border - main header already has border */
   }
   
   .default-header .header-inner {
@@ -3549,9 +3555,7 @@ header[class*="bg-transparent"] .header-nav a {
   }
   
   .default-header .header-inner::after {
-    content: '' !important;
-    grid-column: 3 !important;
-    display: block !important;
+    display: none !important; /* Remove pseudo-element to prevent double borders */
   }
 }
 
@@ -3644,9 +3648,7 @@ header[class*="bg-transparent"] .header-nav a {
           .header-transparent .header-inner::after,
           .scrolled .header-inner::after,
           .default-header .header-inner::after {
-            content: '' !important;
-            grid-column: 3 !important;
-            display: block !important;
+            display: none !important; /* Remove pseudo border to prevent double border */
           }
   
   .default-header .mobile-menu-toggle {
@@ -5278,13 +5280,42 @@ header[class*="bg-transparent"] .header-nav a {
   }
   
   .product-video-container {
-    width: 450px !important;
-    height: 450px !important;
-    max-width: 450px !important;
-    margin: 0 auto !important;
+    max-width: 85% !important;
+    width: 85% !important;
+    height: auto !important;
     aspect-ratio: 1/1 !important;
+    margin: 0 auto !important;
+    padding: 0 1.5rem !important;
     border-radius: 8px !important;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12) !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important; /* Minimal shadow */
+  }
+
+  /* Mobile horizontal scrolling fixes */
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    width: 100% !important;
+  }
+
+  .page-width {
+    max-width: 100% !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+    margin: 0 auto !important;
+    overflow-x: hidden !important;
+  }
+
+  .product-grid {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Footer scrolling fix */
+  footer, .footer {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
   }
 }
 
@@ -5333,10 +5364,8 @@ header[class*="bg-transparent"] .header-nav a {
 }
 
 .media-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 
-    0 32px 64px rgba(0, 0, 0, 0.22),
-    0 12px 24px rgba(0, 0, 0, 0.15);
+  transform: none !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
 }
 
 .media-card img {
@@ -5356,10 +5385,8 @@ header[class*="bg-transparent"] .header-nav a {
 }
 
 .media-card--large:hover {
-  transform: translateY(-3px);
-  box-shadow: 
-    0 40px 80px rgba(0, 0, 0, 0.24),
-    0 15px 30px rgba(0, 0, 0, 0.16);
+  transform: none !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
 }
 
 .media-card--subtle {
@@ -5369,10 +5396,8 @@ header[class*="bg-transparent"] .header-nav a {
 }
 
 .media-card--subtle:hover {
-  transform: translateY(-1px);
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.16),
-    0 8px 16px rgba(0, 0, 0, 0.10);
+  transform: none !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
 }
 
 /* Dark theme support */
