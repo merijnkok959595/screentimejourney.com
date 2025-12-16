@@ -6,7 +6,7 @@
   "dependencies": {
     "@aws-amplify/auth": "^5.6.5",
     "@stripe/stripe-js": "^4.10.0",
-    "@stripe/react-stripe-js": "^2.14.2",
+    "@stripe/react-stripe-js": "^2.8.0",
     "aws-amplify": "^5.3.21",
     "axios": "^1.11.0",
     "react": "^18.3.1",
