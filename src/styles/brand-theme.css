@@ -628,7 +628,7 @@ p, span, div {
   height: 42px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  overflow: hidden;
   color: #ffffff;
   font-family: 'DM Serif Display', serif;
   font-size: 16px;
@@ -637,6 +637,49 @@ p, span, div {
   position: sticky;
   top: 0;
   z-index: 49; /* Below modals */
+}
+
+/* Scrolling Banner Animation */
+.scrolling-banner {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.banner-content {
+  display: inline-block;
+  animation: scroll-left 20s linear infinite;
+  white-space: nowrap;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.scrolling-banner {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.banner-content {
+  display: inline-block;
+  animation: scroll-left 20s linear infinite;
+  white-space: nowrap;
 }
 
 @media (max-width: 768px) {
@@ -655,17 +698,41 @@ p, span, div {
   z-index: 50; /* Well below modals (modals use 99999) */
   border-bottom: 1px solid #e5e5e5;
   padding: 0; /* No padding on header */
-  transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: none; /* Remove any potential box shadow */
+}
+
+.header.scrolled {
+  padding: 0; /* No padding on scroll */
+  border-bottom: 1px solid #e5e5e5; /* Maintain single border */
 }
 
 /* Fix mobile header border doubling */
 @media (max-width: 768px) {
   .header {
-    border-bottom: 1px solid #e5e5e5; /* Ensure single border */
+    border-bottom: 1px solid #e5e5e5; /* Single border only */
+    box-shadow: none; /* Ensure no shadow creates double border effect */
+    background: #f9f9f9; /* Consistent background */
   }
   
   .header.scrolled {
-    border-bottom: 1px solid #e5e5e5; /* Maintain border on scroll */
+    border-bottom: 1px solid #e5e5e5; /* Single border on scroll */
+    box-shadow: none; /* No shadow on scroll */
+    padding: 0;
+  }
+  
+  /* Ensure header inner doesn't add extra borders */
+  .header-inner {
+    border: none;
+    box-shadow: none;
+  }
+  
+  /* Remove any potential pseudo-element borders */
+  .header::before,
+  .header::after,
+  .header-inner::before,
+  .header-inner::after {
+    display: none;
   }
 }
 
@@ -680,7 +747,69 @@ img[src*="Milestones"] {
   object-fit: cover;
 }
 
+/* Fix Mobile Horizontal Scrolling */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.App {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Ensure all containers respect viewport width */
+.container,
+.header-inner,
+.footer-inner,
+.modal,
+.dashboard,
+.dashboard-content {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 @media (max-width: 768px) {
+  /* Fix mobile viewport and prevent horizontal scroll */
+  html {
+    overflow-x: hidden;
+    width: 100%;
+  }
+  
+  body {
+    overflow-x: hidden;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .App {
+    overflow-x: hidden;
+    width: 100vw;
+    max-width: 100vw;
+  }
+  
+  /* Ensure all content containers fit mobile viewport */
+  .container {
+    max-width: 100vw;
+    padding: 0 15px;
+    margin: 0 auto;
+    overflow-x: hidden;
+  }
+  
+  .header-inner {
+    max-width: 100%;
+    padding: 0 15px;
+    overflow-x: hidden;
+  }
+  
+  /* Product images */
   .product-image,
   .milestone-image,
   .device-image,
@@ -710,6 +839,39 @@ img[src*="Milestones"] {
   .media-container {
     padding: 1rem;
     text-align: center;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* Fix footer extending beyond viewport */
+  .footer {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  .footer-inner {
+    max-width: 100%;
+    padding: 0 15px;
+    overflow-x: hidden;
+  }
+  
+  /* Prevent any element from exceeding viewport */
+  * {
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  
+  /* Fix specific elements that might cause overflow */
+  .modal,
+  .dashboard,
+  .dashboard-content,
+  .card,
+  .button,
+  input,
+  textarea {
+    max-width: 100%;
+    box-sizing: border-box;
   }
 }
 
